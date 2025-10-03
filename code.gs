@@ -1,4 +1,4 @@
-// CONFIGURATION SETTINGS
+
 const CONFIG = {
   MASTER_SHEET_NAME: "attendance 2025-2026",
   MAIN_MONTH_HEADERS_ROW: 7, // Row containing "August", "Sep", "Oct", "Nov"
@@ -15,13 +15,11 @@ const CONFIG = {
   MINUTES_THRESHOLD_HALF: 5   // Minutes required for a score of 0.5
 };
 
-// --- Helper: Normalize identifiers (IDs & Names) ---
 function normalizeIdentifier(identifier, isId = false) {
   if (!identifier) return "";
 
   let normalized = identifier.toString().trim().toLowerCase();
 
-  // Collapse multiple spaces
   normalized = normalized.replace(/\s+/g, " ");
 
   if (isId) {
@@ -35,15 +33,12 @@ function normalizeIdentifier(identifier, isId = false) {
   return normalized;
 }
 
-// --- Initialization ---
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu("OTF Attendance Helper")
     .addItem("Process Zoom Report", "showSidebar")
     .addToUi();
 }
-
-// --- Sidebar Functionality ---
 function showSidebar() {
   const htmlOutput = HtmlService.createHtmlOutputFromFile("Sidebar")
     .setTitle("OTF Attendance Processor");
@@ -51,19 +46,16 @@ function showSidebar() {
   SpreadsheetApp.getUi().showSidebar(htmlOutput);
 }
 
-// Function to get configuration for the sidebar
 function getConfig() {
   return CONFIG;
 }
 
-// Function to get date options for dropdowns
 function getDateOptions() {
   try {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     const masterSheet = spreadsheet.getSheetByName(CONFIG.MASTER_SHEET_NAME);
     if (!masterSheet) throw new Error(`Sheet "${CONFIG.MASTER_SHEET_NAME}" not found.`);
 
-    // Read headers from specific rows
     const mainMonthHeaders = masterSheet.getRange(CONFIG.MAIN_MONTH_HEADERS_ROW, 1, 1, masterSheet.getLastColumn()).getValues()[0].map(h => h.toString().trim());
     const dateSubHeaders = masterSheet.getRange(CONFIG.DATE_AND_STUDENT_HEADERS_ROW, 1, 1, masterSheet.getLastColumn()).getValues()[0].map(h => h.toString().trim());
 
@@ -73,7 +65,6 @@ function getDateOptions() {
     const dateOptions = {};
     let lastKnownMonthHeaderCol = -1; // Track column to search for next month
 
-    // Iterate through configured months to find their dates
     CONFIG.DATE_COLUMNS.forEach((month) => {
       const monthHeaderColIdx = mainMonthHeaders.indexOf(month, lastKnownMonthHeaderCol + 1);
 
@@ -93,7 +84,6 @@ function getDateOptions() {
         }
       }
 
-      // Scan columns within the month's range for date headers
       while (currentScanColIdx < endOfCurrentMonthDataColIdx && currentScanColIdx < dateSubHeaders.length) {
         const subHeaderValue = dateSubHeaders[currentScanColIdx];
 
@@ -159,25 +149,19 @@ function processAttendance(zoomCsvFileId, targetMonth, targetDate) {
       throw new Error(`Master sheet "${CONFIG.MASTER_SHEET_NAME}" not found.`);
     }
 
-    // Read data from the master attendance sheet
     const masterData = readMasterSheet(masterSheet);
     stats.totalStudentsInMaster = masterData.data.length;
 
-    // Read and process data from the Zoom CSV file
     const zoomData = readZoomCsv(zoomCsvFileId);
     const attendanceResults = calculateAttendance(zoomData); // Aggregated results from Zoom
     stats.totalZoomEntriesProcessed = Object.keys(attendanceResults).length; // Count unique aggregated entries
 
-    // Update the master sheet with attendance scores and collect update statistics
     const updateResult = updateMasterSheet(masterSheet, masterData, attendanceResults, targetMonth, targetDate, stats);
 
-    // Calculate total processing time
     stats.processingTime = Date.now() - stats.processingTime;
 
-    // Format the detailed statistics into a user-friendly message object
     const messageParts = formatAttendanceStats(stats, targetMonth, targetDate);
 
-    // Combine message parts into a single string for the sidebar status display
     const formattedMessage =
       `${messageParts.summary}\n\n` +
       `Attendance:\n` +
@@ -198,13 +182,11 @@ function processAttendance(zoomCsvFileId, targetMonth, targetDate) {
     Logger.log(`[PROCESS ATTENDANCE ERROR] ${error.message}`);
     return {
       success: false,
-      message: `❌ Error: ${error.message}`, // Error message as a string
+      message: ` Error: ${error.message}`, // Error message as a string
       stats: null
     };
   }
 }
-
-// Helper function to format statistical results into a message object
 function formatAttendanceStats(stats, targetMonth, targetDate) {
   // Calculate percentages safely, avoiding division by zero
   const presentPercentage = stats.totalStudentsInMaster > 0 ? ((stats.attendance.full / stats.totalStudentsInMaster) * 100).toFixed(1) : '0.0';
@@ -228,18 +210,17 @@ function formatAttendanceStats(stats, targetMonth, targetDate) {
 
 // --- Data Reading Functions ---
 
-// Reads and parses the master attendance sheet
+
 function readMasterSheet(sheet) {
   Logger.log('[READ MASTER SHEET] Starting.');
   const range = sheet.getDataRange();
   const values = range.getValues();
 
-  // Ensure enough rows exist for headers and data
   if (values.length < CONFIG.DATE_AND_STUDENT_HEADERS_ROW + 1) {
     throw new Error("Master sheet has insufficient rows for student data.");
   }
 
-  // Extract headers to find column indices
+  
   const studentDataHeaders = values[CONFIG.DATE_AND_STUDENT_HEADERS_ROW - 1].map(h => h.toString().trim());
   const monthHeaders = values[CONFIG.MAIN_MONTH_HEADERS_ROW - 1].map(h => h.toString().trim());
 
@@ -263,19 +244,15 @@ function readMasterSheet(sheet) {
   };
 }
 
-// Reads and parses the Zoom CSV file
 function readZoomCsv(fileId) {
   Logger.log(`[READ ZOOM CSV] Attempting to read file ID: ${fileId}`);
   const file = DriveApp.getFileById(fileId);
   const csvData = file.getBlob().getDataAsString();
   let rows = csvData.split("\n").map(row => row.split(","));
 
-  // Handle potential BOM character at the start of the first cell
   if (rows[0] && rows[0][0] && rows[0][0].startsWith('\ufeff')) {
     rows[0][0] = rows[0][0].replace('\ufeff', '');
   }
-
-  // Filter out rows that are too short or invalid
   const validRows = rows.filter(row => row.length >= 2);
   if (validRows.length < 1) {
     throw new Error("Zoom CSV file is empty or has invalid format.");
@@ -286,17 +263,14 @@ function readZoomCsv(fileId) {
 
 // --- Attendance Calculation Logic ---
 
-// Calculates total attendance minutes and assigns scores based on thresholds
 function calculateAttendance(zoomData) {
   Logger.log('[CALCULATE ATTENDANCE] Starting calculation.');
   const headers = zoomData[0].map(h => h.toString().trim());
   Logger.log(`[CALCULATE ATTENDANCE] Zoom CSV Headers: ${JSON.stringify(headers)}`);
 
-  // Find column indices for Name and Duration
   let nameHeaderIdx = headers.findIndex(h => h.toLowerCase().includes(CONFIG.ZOOM_NAME_HEADER.toLowerCase()));
   let durationHeaderIdx = headers.findIndex(h => h.toLowerCase().includes(CONFIG.ZOOM_DURATION_HEADER.toLowerCase()));
 
-  // Fallback if specific headers are not found
   if (nameHeaderIdx === -1) {
     Logger.log('[CALCULATE ATTENDANCE WARNING] Zoom Name header not found, assuming column 0.');
     nameHeaderIdx = 0;
@@ -307,16 +281,13 @@ function calculateAttendance(zoomData) {
   }
   Logger.log(`[CALCULATE ATTENDANCE] Using Name/ID Column Index: ${nameHeaderIdx}, Duration Column Index: ${durationHeaderIdx}`);
 
-  // Map to store aggregated attendance time per canonical student identifier
   const canonicalAttendanceMap = {};
 
-  // Iterate through each row of Zoom data (skipping header)
   for (let i = 1; i < zoomData.length; i++) {
     const row = zoomData[i];
     let identifierRaw = row[nameHeaderIdx] ? row[nameHeaderIdx].toString().trim() : "";
     const duration = row[durationHeaderIdx] ? row[durationHeaderIdx].toString().trim() : "";
 
-    // Skip if identifier or duration is missing
     if (!identifierRaw || !duration) {
       Logger.log(`[CALCULATE ATTENDANCE WARNING] Skipping row ${i + 1}: missing identifier or duration.`);
       continue;
@@ -333,13 +304,11 @@ function calculateAttendance(zoomData) {
       otfIdExtracted = match[0].replace(/[\(\)\[\]\{\}]/g, '').replace(/\s/g, '-').toUpperCase().trim();
       nameExtracted = identifierRaw.replace(match[0], '').trim(); // Remove ID from the string
 
-      // Further clean up the name part
       nameExtracted = nameExtracted
         .replace(/--|\s+\|\s*|[\({]$/i, '') // Remove trailing separators
         .replace(/\(.*\)/g, '')          // Remove any parenthesized text from name
         .trim();
 
-      // Fallback if name extraction results in an empty string or looks like an ID
       if (!nameExtracted || nameExtracted.match(/^OTF?[- ]?\d/i)) {
         nameExtracted = identifierRaw; // Use the original identifier as name if extraction failed badly
       }
@@ -355,7 +324,6 @@ function calculateAttendance(zoomData) {
       continue;
     }
 
-    // Determine the canonical key for aggregation
     let canonicalKey = null;
     if (otfIdExtracted && otfIdExtracted.length > 5) {
       canonicalKey = normalizeIdentifier(otfIdExtracted, true);
@@ -366,12 +334,10 @@ function calculateAttendance(zoomData) {
       continue;
     }
 
-    // Aggregate minutes under the canonical key
     canonicalAttendanceMap[canonicalKey] = (canonicalAttendanceMap[canonicalKey] || 0) + minutes;
     Logger.log(`[CALCULATE ATTENDANCE] Aggregated ${minutes} mins for key "${canonicalKey}". Total: ${canonicalAttendanceMap[canonicalKey]}.`);
   }
 
-  // Convert aggregated minutes to attendance scores (1.0, 0.5, 0.0)
   const results = {};
   Object.keys(canonicalAttendanceMap).forEach(key => {
     results[key] = {
@@ -383,7 +349,6 @@ function calculateAttendance(zoomData) {
   return results;
 }
 
-// Helper to parse duration string (e.g., "MM:SS" or "HH:MM:SS") into total minutes
 function parseDurationToMinutes(durationStr) {
   if (!durationStr) return 0;
   const parts = durationStr.split(":").map(Number);
