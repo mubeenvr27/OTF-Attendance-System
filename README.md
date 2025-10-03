@@ -20,22 +20,32 @@ A Google Apps Script project to automate attendance tracking for Orange Tree Fou
 1.	git clone https://github.com/yourusername/OTF-Attendance-System.git
 2.	Google Apps Script:
 ⦁	Create a new Apps Script project in Google Sheets (Extensions > Apps Script).
+
 ⦁	Copy code.gs and Sidebar.html into the project.
+
 ⦁	Update CONFIG.MASTER_SHEET_NAME in code.gs to match your Google Sheet name.
-3.	Google Picker API:
+
+4.	Google Picker API:
 ⦁	Enable Google Picker and Drive APIs in Google Cloud Console.
+
 ⦁	Add your CLIENT_ID, DEVELOPER_KEY, and API_KEY in code.gs (see getFilePicker).
-4.	Run:
+6.	Run:
 ⦁	Reload the Google Sheet to see the "OTF Attendance Helper" menu.
+
 ⦁	Use the sidebar to select a Zoom CSV, month, and date, then process.
 
 ## Requirements
 ⦁	Google Account with access to Sheets and Apps Script.
+
 ⦁	Google Cloud Project with Picker and Drive APIs enabled (free tier).
+
 ⦁	Zoom CSV reports with Name and Duration columns.
 
 ## Usage
 ⦁	Open the Google Sheet (college boys attendance 2025-2026).
+
 ⦁	Click "OTF Attendance Helper > Process Zoom Report".
+
 ⦁	Select a Zoom CSV from Google Drive, choose a month (e.g., "Oct") and date (e.g., "02"), and click "Process Attendance".
+
 ⦁	Attendance scores update in the corresponding date column.
