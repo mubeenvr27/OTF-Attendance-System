@@ -2,9 +2,13 @@
 A Google Apps Script project to automate attendance tracking for Orange Tree Foundation (OTF) Zoom classes, specifically for college boys. Processes Zoom CSV reports to calculate student attendance based on join/leave times, matches against a master Google Sheet, and updates scores (1.0 for >25 min, 0.5 for 5-25 min, 0 for <5 min).
 ## Features
 ⦁	Zoom CSV Processing: Aggregates multiple join/leave entries per student.
+
 ⦁	Matching Logic: Matches by OTF ID (normalized) first, then name, with case-insensitive and space-cleaned comparisons.
+
 ⦁	Google Sheets Integration: Updates attendance in a master sheet (college boys attendance 2025-2026) under specific month/date columns.
+
 ⦁	Sidebar UI: User-friendly interface for selecting Zoom CSV, month, and date via Google Picker API.
+
 ⦁	Free Tools Only: Built with Google Apps Script, Sheets, and Drive (no paid services).
 
 ## Project Structure
