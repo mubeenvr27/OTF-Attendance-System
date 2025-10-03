@@ -1,0 +1,557 @@
+sidebar.html
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Google+Sans:400,500,700&display=swap">
+    <style>
+        :root {
+            --otf-orange: #FF6634;
+            --otf-green: #00A651;
+            --otf-gray: #414042;
+            --background-light: #F8F9FA;
+            --surface: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --text-primary: #202124;
+            --text-secondary: #5F6368;
+            --border-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Google Sans', 'Roboto', sans-serif;
+        }
+
+        body {
+            background: var(--background-light);
+            color: var(--text-primary);
+            padding: 24px;
+            line-height: 1.5;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo-container {
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .subtitle {
+            color: var(--otf-gray);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        label {
+            display: block;
+            color: var(--otf-gray);
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E8EAED;
+            border-radius: 8px;
+            font-size: 16px;
+            color: var(--text-primary);
+            background: var(--surface);
+            transition: all 0.2s ease;
+        }
+
+        select:hover, input[type="text"]:hover {
+            border-color: var(--otf-orange);
+        }
+
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--otf-green);
+            box-shadow: 0 0 0 3px rgba(0, 166, 81, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--otf-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #008c44;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--otf-orange);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #e55a2d;
+            transform: translateY(-1px);
+        }
+        .status {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: #E6F4EA;
+            color: #1E8E3E;
+            border: 1px solid #1E8E3E;
+        }
+
+        .status-error {
+            background: #FCE8E6;
+            color: #D93025;
+            border: 1px solid #D93025;
+        }
+
+        .status-info {
+            background: #E8F0FE;
+            color: #1A73E8;
+            border: 1px solid #1A73E8;
+        }
+
+        .loader {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #FFF;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {transform: rotate(360deg);}
+        }
+        .analytics {
+            margin-top: 32px;
+            padding: 20px;
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 6px var(--shadow);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .stat-card {
+            padding: 16px;
+            background: #F8F9FA;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--otf-green);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="https://orangetreefoundation.org/wp-content/uploads/2025/03/otf-logo.png" alt="Orange Tree Foundation" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+    <span style="display:none; color: var(--otf-gray);">OTF Logo (Failed to Load)</span>
+</div>
+
+    <div class="card">
+        <label>1. Select Zoom CSV File</label>
+        <input type="text" id="fileName" readonly placeholder="No file selected">
+        <button class="btn btn-secondary" id="browseBtn" onclick="openFilePicker()" disabled>
+            📁 Browse Files
+        </button>
+    </div>
+
+    <div class="card">
+        <label>2. Select Month</label>
+        <select id="monthPicker" onchange="updateDateOptions()">
+            <option value="">Choose month...</option>
+        </select>
+    </div>
+
+    <div class="card">
+        <label>3. Select Date</label>
+        <select id="datePicker" onchange="updateProcessButtonState()" disabled>
+            <option value="">Choose date...</option>
+        </select>
+    </div>
+
+    <button class="btn btn-primary" id="processBtn" onclick="processReport()" disabled>
+        ⚙️ Process Attendance
+    </button>
+
+    <div id="status" class="status status-info">
+        <div class="loader"></div>
+        <p>Initializing system...</p>
+    </div>
+
+    <div id="analytics" class="analytics" style="display: none;">
+        <h3>Processing Results</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalStudents">-</div>
+                <div class="stat-label">Total Students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="presentCount">-</div>
+                <div class="stat-label">Present</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="absentCount">-</div>
+                <div class="stat-label">Absent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="attendanceRate">-</div>
+                <div class="stat-label">Attendance Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      let pickerApiLoaded = false;
+      let selectedFileId = null;
+      let CONFIG = null;
+      let dateOptions = {};
+
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM fully loaded. Starting initialization...');
+        google.script.run
+          .withSuccessHandler(config => {
+            console.log('Received CONFIG:', config);
+            CONFIG = config;
+            populateMonthDropdown();
+            loadGooglePicker();
+            fetchDateOptions();
+          })
+          .withFailureHandler(error => {
+            console.error('Error fetching CONFIG:', error);
+            handleApiError(`Failed to load configuration: ${error.message}`);
+          })
+          .getConfig();
+      });
+
+      function populateMonthDropdown() {
+        const monthPicker = document.getElementById('monthPicker');
+        monthPicker.innerHTML = '<option value="">Select a month</option>';
+        if (CONFIG && CONFIG.DATE_COLUMNS) {
+            CONFIG.DATE_COLUMNS.forEach(month => {
+                const option = document.createElement('option');
+                option.value = month;
+                option.textContent = month;
+                monthPicker.appendChild(option);
+            });
+        }
+        updateProcessButtonState();
+      }
+
+      function fetchDateOptions() {
+        google.script.run
+          .withSuccessHandler(options => {
+            console.log('Received date options:', options);
+            dateOptions = options;
+            updateDateOptions();
+            document.getElementById('status').className = 'info';
+            document.getElementById('status').innerHTML = '<span class="status-icon">✅</span> Configuration loaded! Select a Zoom CSV file to process.';
+          })
+          .withFailureHandler(error => {
+            console.error('Error fetching date options:', error);
+            handleApiError(`Failed to fetch date options: ${error.message}`);
+          })
+          .getDateOptions();
+      }
+
+      function updateDateOptions() {
+        const monthPicker = document.getElementById('monthPicker');
+        const datePicker = document.getElementById('datePicker');
+        const selectedMonth = monthPicker.value;
+
+        datePicker.innerHTML = '<option value="">Select a date</option>';
+        datePicker.disabled = true;
+
+        if (selectedMonth && dateOptions[selectedMonth]) {
+          dateOptions[selectedMonth].forEach(date => {
+            const option = document.createElement('option');
+            option.value = date;
+            option.textContent = date;
+            datePicker.appendChild(option);
+          });
+          datePicker.disabled = false;
+        }
+        updateProcessButtonState();
+      }
+
+      function updateProcessButtonState() {
+        const targetMonth = document.getElementById('monthPicker').value;
+        const targetDate = document.getElementById('datePicker').value;
+        const processBtn = document.getElementById('processBtn');
+
+        processBtn.disabled = !selectedFileId || !targetMonth || !targetDate;
+        console.log(`Process button state updated: disabled=${processBtn.disabled}, file=${!!selectedFileId}, month=${!!targetMonth}, date=${!!targetDate}`);
+      }
+
+      function loadGooglePicker() {
+        const statusEl = document.getElementById('status');
+        statusEl.className = 'loading-state';
+        statusEl.innerHTML = '<span class="spinner"></span> Loading Google API... (takes 5-10 seconds)';
+
+        if (typeof gapi !== 'undefined') {
+          console.log('gapi is already defined, proceeding to load picker library.');
+          loadPickerLibrary();
+          return;
+        }
+
+        console.log('Loading Google API script...');
+        const script = document.createElement('script');
+        script.src = 'https://apis.google.com/js/api.js?onload=onApiLoad';
+        script.async = true;
+        script.defer = true;
+
+        window.onApiLoad = () => {
+          console.log('Google API script loaded successfully.');
+          loadPickerLibrary();
+        };
+
+        script.onerror = (error) => {
+          console.error('Error loading Google API script:', error);
+          handleApiError(`Failed to load Google API script. Check internet connection or Cloud Console. Details: ${error.message}`);
+        };
+
+        document.head.appendChild(script);
+        setTimeout(() => {
+          if (!pickerApiLoaded) {
+            console.warn('Google API script load timed out after 15 seconds.');
+            handleApiError('Google API script timed out. Refresh the page and try again.');
+          }
+        }, 15000);
+      }
+
+      function loadPickerLibrary() {
+        console.log('Attempting to load Google Picker library...');
+        gapi.load('picker', {
+          'callback': () => {
+            console.log('Google Picker library loaded successfully.');
+            pickerApiLoaded = true;
+            document.getElementById('browseBtn').disabled = false;
+            document.getElementById('status').className = 'info';
+            document.getElementById('status').innerHTML = '<span class="status-icon">✅</span> Google API loaded! Select a Zoom CSV file to process.';
+          },
+          'onerror': (error) => {
+            console.error('Error loading Google Picker library:', error);
+            handleApiError('Failed to load Google Picker library. Check Cloud Console settings or API enablement.');
+          },
+          'timeout': 10000,
+          'ontimeout': () => {
+            console.warn('Google Picker library load timed out after 10 seconds.');
+            handleApiError('Google Picker API timed out. Refresh and try again.');
+          }
+        });
+      }
+
+      function handleApiError(message) {
+        console.error('API Error:', message);
+        const statusEl = document.getElementById('status');
+        statusEl.className = 'error';
+        statusEl.innerHTML = `<span class="status-icon">❌</span> ${message}<br><small>Check console for details.</small>`;
+        document.getElementById('browseBtn').disabled = true;
+      }
+
+      function openFilePicker() {
+        if (!pickerApiLoaded) {
+          console.warn('Browse button clicked but API not loaded.');
+          showError('API not ready. Please wait for the "Google API loaded" message.');
+          return;
+        }
+
+        console.log('Opening file picker...');
+        document.getElementById('status').className = 'loading-state';
+        document.getElementById('status').innerHTML = '<span class="spinner"></span> Fetching configuration...';
+
+        google.script.run
+          .withSuccessHandler(data => {
+            console.log('Received config data from server:', JSON.stringify(data));
+            if (data && data.appId && data.token && data.developerKey) {
+              buildPickerUI(data);
+            } else {
+              console.error('Invalid config data received:', data);
+              handleApiError('Configuration data missing or invalid. Check PickerConfig.gs and Cloud Console.');
+            }
+          })
+          .withFailureHandler(error => {
+            console.error('Server-side error fetching config:', error);
+            handleApiError(`Config error: ${error.message}<br>Check PickerConfig.gs and Cloud Console authorization.`);
+          })
+          .getFilePicker();
+      }
+
+      function buildPickerUI(data) {
+        console.log('Building Google Picker UI with data:', JSON.stringify(data));
+        try {
+          const view = new google.picker.DocsView()
+            .setIncludeFolders(true)
+            .setMimeTypes('text/csv')
+            .setSelectFolderEnabled(false);
+
+          const picker = new google.picker.PickerBuilder()
+            .enableFeature(google.picker.Feature.NAV_HIDDEN)
+            .setAppId(data.appId)
+            .setOAuthToken(data.token)
+            .setDeveloperKey(data.developerKey)
+            .setOrigin(google.script.host.origin)
+            .addView(view)
+            .setCallback(pickerCallback)
+            .build();
+
+          console.log('Picker built successfully. Making it visible.');
+          picker.setVisible(true);
+          document.getElementById('status').className = 'info';
+          document.getElementById('status').innerHTML = '<span class="status-icon">ℹ️</span> Select a CSV file from Google Drive.';
+        } catch (error) {
+          console.error('Picker build error:', error);
+          handleApiError(`Picker UI build error: ${error.message}`);
+        }
+      }
+
+      function pickerCallback(data) {
+        console.log('Picker callback received:', data);
+        if (data.action === google.picker.Action.PICKED) {
+          const file = data.docs[0];
+          console.log('File picked:', file);
+          document.getElementById('fileName').value = file.name;
+          selectedFileId = file.id;
+          updateProcessButtonState();
+          document.getElementById('status').className = 'success';
+          document.getElementById('status').innerHTML = `<span class="status-icon">✅</span> Selected: ${file.name} (ID: ${file.id.substring(0,8)}...)`;
+        } else if (data.action === google.picker.Action.CANCEL) {
+          console.log('Picker cancelled by user.');
+          document.getElementById('status').className = 'info';
+          document.getElementById('status').innerHTML = '<span class="status-icon">ℹ️</span> File selection cancelled. Ready to try again.';
+          selectedFileId = null;
+          document.getElementById('fileName').value = "No file selected";
+          updateProcessButtonState();
+        } else if (data.action === google.picker.Action.LOADED) {
+          console.log('Picker UI loaded.');
+          document.getElementById('status').className = 'info';
+          document.getElementById('status').innerHTML = '<span class="status-icon">ℹ️</span> Picker UI loaded. Select a CSV file.';
+        } else {
+          console.warn('Unknown picker action:', data.action);
+        }
+      }
+
+      function processReport() {
+        const currentSelectedFileId = selectedFileId;
+        const currentTargetMonth = document.getElementById('monthPicker').value;
+        const currentTargetDate = document.getElementById('datePicker').value;
+
+        if (!currentSelectedFileId) {
+          showError('Please select a Zoom CSV file first!');
+          console.warn('Process report called but no file selected.');
+          return;
+        }
+        if (!currentTargetMonth || !currentTargetDate) {
+          showError('Please select both a month and a date!');
+          console.warn('Missing month or date:', currentTargetMonth, currentTargetDate);
+          return;
+        }
+
+        console.log(`Processing report for File ID: "${currentSelectedFileId}", Month: "${currentTargetMonth}", Date: "${currentTargetDate}"`);
+        document.getElementById('status').className = 'loading-state';
+        document.getElementById('status').innerHTML = '<span class="spinner"></span> Processing attendance...';
+        document.getElementById('processBtn').disabled = true;
+
+        google.script.run
+          .withSuccessHandler(handleResult)
+          .withFailureHandler(error => {
+            console.error('Process attendance error:', error);
+            handleApiError(`Processing error: ${error.message}`);
+            document.getElementById('processBtn').disabled = false;
+          })
+          .processAttendance(currentSelectedFileId, currentTargetMonth, currentTargetDate);
+      }
+
+      function handleResult(result) {
+        console.log('Processing result received:', result);
+        const statusEl = document.getElementById('status');
+        statusEl.className = result.success ? 'success' : 'error';
+        const icon = result.success ? '✅' : '❌';
+        statusEl.innerHTML = `<span class="status-icon">${icon}</span> ${result.message}`;
+        document.getElementById('processBtn').disabled = false;
+        document.getElementById('browseBtn').disabled = false;
+      }
+
+      function showError(message) {
+        console.error('UI Error:', message);
+        const statusEl = document.getElementById('status');
+        statusEl.className = 'error';
+        statusEl.innerHTML = `<span class="status-icon">❌</span> ${message}`;
+      }
+    </script>
+  </body>
+</html>
