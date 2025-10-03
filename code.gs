@@ -1,8 +1,8 @@
 
 const CONFIG = {
   MASTER_SHEET_NAME: "attendance 2025-2026",
-  MAIN_MONTH_HEADERS_ROW: 7, // Row containing "August", "Sep", "Oct", "Nov"
-  DATE_AND_STUDENT_HEADERS_ROW: 8, // Row containing "W", "Date", "Student Name", "10", "24", etc.
+  MAIN_MONTH_HEADERS_ROW: 7, 
+  DATE_AND_STUDENT_HEADERS_ROW: 8, 
 
   NAME_COL: "Student Name",
   OTF_ID_COL: "OTF ID",
@@ -11,8 +11,8 @@ const CONFIG = {
 
   ZOOM_NAME_HEADER: "Name",
   ZOOM_DURATION_HEADER: "Duration",
-  MINUTES_THRESHOLD_FULL: 25, // Minutes required for a score of 1.0
-  MINUTES_THRESHOLD_HALF: 5   // Minutes required for a score of 0.5
+  MINUTES_THRESHOLD_FULL: 25, 
+  MINUTES_THRESHOLD_HALF: 5   
 };
 
 function normalizeIdentifier(identifier, isId = false) {
