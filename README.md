@@ -19,17 +19,21 @@ A Google Apps Script project to automate attendance tracking for Orange Tree Fou
 ## Setup Instructions
 1.	git clone https://github.com/yourusername/OTF-Attendance-System.git
 2.	Google Apps Script:
+   
 ⦁	Create a new Apps Script project in Google Sheets (Extensions > Apps Script).
 
 ⦁	Copy code.gs and Sidebar.html into the project.
 
 ⦁	Update CONFIG.MASTER_SHEET_NAME in code.gs to match your Google Sheet name.
 
-4.	Google Picker API:
+3.	Google Picker API:
+   
 ⦁	Enable Google Picker and Drive APIs in Google Cloud Console.
 
 ⦁	Add your CLIENT_ID, DEVELOPER_KEY, and API_KEY in code.gs (see getFilePicker).
-6.	Run:
+
+4.	Run:
+   
 ⦁	Reload the Google Sheet to see the "OTF Attendance Helper" menu.
 
 ⦁	Use the sidebar to select a Zoom CSV, month, and date, then process.
