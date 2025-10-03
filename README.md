@@ -31,7 +31,11 @@ Requirements
 ⦁	Zoom CSV reports with Name and Duration columns.
 
 Usage
-⦁	Open the Google Sheet (college boys attendance 2025-2026).
-⦁	Click "OTF Attendance Helper > Process Zoom Report".
-⦁	Select a Zoom CSV from Google Drive, choose a month (e.g., "Oct") and date (e.g., "02"), and click "Process Attendance".
-⦁	Attendance scores update in the corresponding date column.
+
+Open the Google Sheet (college boys attendance 2025-2026).
+Click "OTF Attendance Helper > Process Zoom Report".
+Select a Zoom CSV from Google Drive, choose a month (e.g., "Oct") and date (e.g., "02"), and click "Process Attendance".
+Attendance scores update in the corresponding date column.
+
+License
+MIT License (or specify your choice).
