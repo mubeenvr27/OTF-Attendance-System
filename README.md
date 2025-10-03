@@ -1,4 +1,4 @@
-###OTF Attendance System
+## OTF Attendance System
 A Google Apps Script project to automate attendance tracking for Orange Tree Foundation (OTF) Zoom classes, specifically for college boys. Processes Zoom CSV reports to calculate student attendance based on join/leave times, matches against a master Google Sheet, and updates scores (1.0 for >25 min, 0.5 for 5-25 min, 0 for <5 min).
 Features
 ⦁	Zoom CSV Processing: Aggregates multiple join/leave entries per student.
